@@ -17,7 +17,6 @@ local Window = Library:CreateWindow({
 
 local Tabs = {
 	Main = Window:AddTab("Main", "user"),
-    Player = Window:AddTab("Player", "user-cog"),
 }
 
 local GB = {
