@@ -88,9 +88,12 @@ local function FuncNoclip()
 end
 
 -- // UI Functions
-local function AddSliderToggle(Config)
-    local Toggle = Config.Group:AddToggle(Config.Id, { Text = Config.Text, Default = false })
-        
+function Main:AddSliderToggle(Config)
+    local Toggle = Config.Group:AddToggle(Config.Id, { 
+        Text = Config.Text, 
+        Default = Config.DefaultToggle or false 
+    })
+    
     local Slider = Config.Group:AddSlider(Config.Id .. "Value", { 
         Text = Config.Text, 
         Default = Config.Default, 
@@ -98,25 +101,19 @@ local function AddSliderToggle(Config)
         Max = Config.Max, 
         Rounding = Config.Rounding or 0, 
         Compact = true, 
-        Visible = false
+        Visible = false 
     })
 
     Toggle:OnChanged(function()
         Slider:SetVisible(Toggle.Value)
     end)
+
+    return Toggle, Slider
 end
 
 
 function Main:AddPlayerTab(Window)
     local PlayerTab = Window:AddTab("Player", "user")
-
-    PlayerTab:UpdateWarningBox({
-        Title = "Warning",
-        Text = "⚠️ Use in caution.",
-        IsNormal = false,
-        Visible = true,
-        LockSize = true,
-    })
 
     local GB = {
         Left = {
@@ -130,14 +127,14 @@ function Main:AddPlayerTab(Window)
     }
 
     -- // General
-    AddSliderToggle({ Group = GB.Left.General, Id = "WS", Text = "WalkSpeed", Default = 16, Min = 16, Max = 250 })
-    AddSliderToggle({ Group = GB.Left.General, Id = "TPW", Text = "TPWalk", Default = 2, Min = 1, Max = 50 })
-    AddSliderToggle({ Group = GB.Left.General, Id = "JP", Text = "JumpPower", Default = 50, Min = 50, Max = 500 })
+    local WS_T, WS_S = AddSliderToggle({ Group = GB.Left.General, Id = "WS", Text = "WalkSpeed", Default = 16, Min = 16, Max = 250 })
+    local TPW_T, TPW_S = AddSliderToggle({ Group = GB.Left.General, Id = "TPW", Text = "TPWalk", Default = 2, Min = 1, Max = 50 })
+    AddSliderToggle({ Group = GB.Left.General, Id = "JP", Text = "JumpPower", Default = 50, Min = 0, Max = 500 })
     AddSliderToggle({ Group = GB.Left.General, Id = "HH", Text = "HipHeight", Default = 2, Min = 0, Max = 10, Rounding = 1 })
-    AddSliderToggle({ Group = GB.Left.General, Id = "Grav", Text = "Gravity", Default = 196, Min = 0, Max = 500 })
+    AddSliderToggle({ Group = GB.Left.General, Id = "Grav", Text = "Gravity", Default = 196, Min = 0, Max = 500, Rounding = 1})
     AddSliderToggle({ Group = GB.Left.General, Id = "Zoom", Text = "Camera Zoom", Default = 128, Min = 128, Max = 10000 })
     AddSliderToggle({ Group = GB.Left.General, Id = "FOV", Text = "Field of View", Default = 70, Min = 30, Max = 120 })
-    AddSliderToggle({ Group = GB.Left.General, Id = "LimitFPS", Text = "Limit FPS", Default = 60, Min = 30, Max = 240 })
+    local FPS_T, FPS_S = AddSliderToggle({ Group = GB.Left.General, Id = "LimitFPS", Text = "Set Max FPS", Default = 60, Min = 30, Max = 240 })
 
     GB.Left.General:AddToggle("Noclip", { Text = "Noclip" })
     GB.Left.General:AddToggle("Disable3DRender", { Text = "Disable 3D Rendering" })
@@ -170,8 +167,19 @@ function Main:AddPlayerTab(Window)
         Default = 1 
     })
 
+    PlayerTab:UpdateWarningBox({
+        Title = "Warning",
+        Text = "⚠️ Use in caution.",
+        IsNormal = false,
+        Visible = true,
+        LockSize = true,
+    })
+
     -- // Func
-    Library.Toggles.TPW:OnChanged(function(v) Thread("TPW", FuncTPW, v) end)
+    Library.Toggles.TPW:OnChanged(function(v)
+        TPW_S:SetVisible(TPW_T.Value)
+        Thread("TPW", FuncTPW, v)
+    end)
     Library.Toggles.Noclip:OnChanged(function(v) Thread("Noclip", FuncNoclip, v) end)
 
     Connections.StatLoop = RunS.Stepped:Connect(function()
@@ -210,10 +218,17 @@ function Main:AddPlayerTab(Window)
 
     -- FPS Cap
     Library.Options.LimitFPSValue:OnChanged(function()
-        if Library.Toggles.LimitFPS.Value then setfpscap(Library.Options.LimitFPSValue.Value) end
+        if FPS_T.Value then
+            setfpscap(FPS_S.Value) 
+        end
     end)
     Library.Toggles.LimitFPS:OnChanged(function(v)
-        if not v then setfpscap(999) end
+        FPS_S:SetVisible(FPS_T.Value)
+        if not v then
+            setfpscap(999)
+        else
+--            setfpscap(FPS_S.Value)
+        end
     end)
 
     -- 3D Render
