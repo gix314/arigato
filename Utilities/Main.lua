@@ -89,22 +89,13 @@ end
 
 -- // UI Functions
 local function AddSliderToggle(Config)
-        local Toggle = GB.Left.General:AddToggle(Config.Id, { Text = Config.Text, Default = false })
-        local Slider = Toggle:AddSlider(Config.Id .. "Value", { 
-            Text = Config.Text, 
-            Default = Config.Default, 
-            Min = Config.Min, 
-            Max = Config.Max, 
-            Rounding = Config.Rounding or 0,
-            Compact = true,
-            Visible = false
-        })
-
-        Toggle:OnChanged(function()
-            Slider:SetVisible(Toggle.Value)
-        end)
-        
-        return Toggle, Slider
+    local Toggle = Config.Group:AddToggle(Config.Id, { Text = Config.Text, Default = false })
+    local Slider = Toggle:AddSlider(Config.Id .. "Value", { 
+        Text = Config.Text, Default = Config.Default, Min = Config.Min, Max = Config.Max, 
+        Rounding = Config.Rounding or 0, Compact = true, Visible = false 
+    })
+    Toggle:OnChanged(function() Slider:SetVisible(Toggle.Value) end)
+    return Toggle, Slider
 end
 
 
