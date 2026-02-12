@@ -138,11 +138,6 @@ function Main:AddPlayerTab(Window)
     AddSliderToggle({ Group = GB.Left.General, Id = "Zoom", Text = "Camera Zoom", Default = 128, Min = 128, Max = 10000 })
     AddSliderToggle({ Group = GB.Left.General, Id = "FOV", Text = "Field of View", Default = 70, Min = 30, Max = 120 })
     AddSliderToggle({ Group = GB.Left.General, Id = "LimitFPS", Text = "Limit FPS", Default = 60, Min = 30, Max = 240 })
-    
-    FPSToggle:OnChanged(function()
-        FPSSlider:SetVisible(FPSToggle.Value)
-        if not FPSToggle.Value then setfpscap(999) end
-    end)
 
     GB.Left.General:AddToggle("Noclip", { Text = "Noclip" })
     GB.Left.General:AddToggle("Disable3DRender", { Text = "Disable 3D Rendering" })
