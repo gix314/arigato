@@ -286,9 +286,9 @@ task.spawn(function()
             local gFav = Ghost:GetAttribute("FavoriteRoom") or "N/A"
             local gCur = Ghost:GetAttribute("CurrentRoom") or "N/A"
             
-            if not EvidenceFound.LaserDetected then
+            if not EvidenceFound.LaserProjector then
                 if Ghost:GetAttribute("InLaser") == true and Ghost:GetAttribute("LaserVisible") == true then
-                    EvidenceFound.LaserDetected = true
+                    EvidenceFound.LaserProjector = true
                 end
             end
 
@@ -298,7 +298,7 @@ task.spawn(function()
             table.insert(StatusLines, "Fav Room: " .. gFav)
             table.insert(StatusLines, "Cur Room: " .. gCur)
 
-            local laserDisp = EvidenceFound.LaserDetected and "<font color='#00FF00'>Yes</font>" or "No"
+            local laserDisp = EvidenceFound.LaserProjector and "<font color='#00FF00'>Yes</font>" or "No"
             table.insert(StatusLines, "Laser Projector: " .. laserDisp)
         else
             table.insert(StatusLines, "Ghost: <font color='#AAAAAA'>Waiting...</font>")
@@ -361,22 +361,23 @@ task.spawn(function()
 
             if not EvidenceFound.WritingFound and itemName == "Spirit Book" then
                 if item:GetAttribute("PhotoRewardType") == "GhostWriting" then
-                    EvidenceFound.WritingFound = true
+                    EvidenceFound.GhostWriting = true
                 end
             end
 
-            if not EvidenceFound.WitheredFound and itemName == "Flower Pot" then
+            if not EvidenceFound.Withered and itemName == "Flower Pot" then
                 if item:GetAttribute("PhotoRewardType") == "WitheredFlowers" then
                     EvidenceFound.Withered = true
                 end
             end
+
         end
 
         local emfColor = EvidenceFound.EMF5 and "#00FF00" or "#FF0000"
         table.insert(StatusLines, string.format("EMF: <font color='%s'>%d</font>", emfColor, EvidenceFound.MaxEMF))
         
-        table.insert(StatusLines, "Ghost Writing: " .. (EvidenceFound.WritingFound and "<font color='#00FF00'>Yes</font>" or "No"))
-        table.insert(StatusLines, "Withered: " .. (EvidenceFound.WitheredFound and "<font color='#00FF00'>Yes</font>" or "No"))
+        table.insert(StatusLines, "Ghost Writing: " .. (EvidenceFound.GhostWriting and "<font color='#00FF00'>Yes</font>" or "No"))
+        table.insert(StatusLines, "Withered: " .. (EvidenceFound.Withered and "<font color='#00FF00'>Yes</font>" or "No"))
 
         Status_HUD:SetText(table.concat(StatusLines, "\n"))
     end
