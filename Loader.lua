@@ -24,8 +24,23 @@ arigato.Utilities.UI = LoadScript("Utilities/UI")
 arigato.Utilities.Main = LoadScript("Utilities/Main")
 
 local Games = {
-    ["18794863104"] = "Games/DMNLG-Game",
+    [18794863104] = {Name = "Demonology", Script = "Games/DMNLG-Game"},
 }
 
-local GameScript = Games[game.PlaceId] or "Games/Universal"
-LoadScript(GameScript)
+local GameData = Games[game.PlaceId]
+
+if GameData then
+    arigato.Utilities.UI.Library:Notify({
+        Title = "arigato",
+        Description = "Loading " .. GameData.Name .. "...",
+        Time = 5
+    })
+    LoadScript(GameData.Script)
+else
+    arigato.Utilities.UI.Library:Notify({
+        Title = "arigato",
+        Description = "Game not supported, loading Universal...",
+        Time = 5
+    })
+    LoadScript("Games/Universal")
+end
