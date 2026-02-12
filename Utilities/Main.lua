@@ -238,6 +238,7 @@ function Main:AddConfigTab(Window)
     local MenuGroup = ConfigTab:AddLeftGroupbox("Menu", "wrench")
 
     local Watermark = Library:AddDraggableLabel("N/A")
+    Watermark:SetVisible(false)
 
     local FrameTimer = tick()
     local FrameCounter = 0;
