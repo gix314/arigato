@@ -319,6 +319,7 @@ function Main:AddConfigTab(Window)
     UI.ThemeManager:ApplyToTab(ConfigTab)
 
     task.spawn(function()
+        task.wait(0.1)
         UI.SaveManager:LoadAutoloadConfig()
     end)
 end
