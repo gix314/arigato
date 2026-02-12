@@ -32,14 +32,6 @@ local GB = {
 			ESP = Tabs.Main:AddRightGroupbox("ESP", "sliders-horizontal"),
 		},
 	},
-    Player = {
-        Left = {
-            Modifiers = Tabs.Player:AddLeftGroupbox("Modifiers", "settings-2"),
-        },
-        Right = {
-
-        },
-    },
 }
 
 local Status_HUD = Library:AddDraggableLabel("Initializing HUD...")
@@ -129,4 +121,5 @@ local CP_BoxESP = T_BoxESP:AddColorPicker("Color_BoxESP", {
 
 
 Main:AddPlayerTab(Window)
+task.wait(0.1)
 Main:AddConfigTab(Window)
