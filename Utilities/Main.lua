@@ -10,7 +10,7 @@ local Flags = {}
 local Connections = {}
 local Defaults = {
     Gravity = workspace.Gravity,
-    FOV = 70, -- Standard Roblox FOV
+    FOV = 70,
     WalkSpeed = 16,
     JumpPower = 50,
     HipHeight = 0,
@@ -120,7 +120,7 @@ function Main:AddPlayerTab(Window)
 
     local GB = {
         Left = {
-            General = PlayerTab:AddLeftGroupbox("General", "file-stack"),
+            General = PlayerTab:AddLeftGroupbox("General", "user-cog"),
             Server = PlayerTab:AddLeftGroupbox("Server", "server"),
         },
         Right = {
