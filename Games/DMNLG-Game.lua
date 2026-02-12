@@ -32,6 +32,7 @@ local Window = Library:CreateWindow({
 	Title = "arigato",
 	Footer = "Demonology | BUILD 0.0.0.1 | DEV",
 	NotifySide = "Right",
+    Icon = 120915418623262,
 	ShowCustomCursor = false,
 	AutoShow = true,
 	Center = true,

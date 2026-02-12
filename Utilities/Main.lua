@@ -175,7 +175,7 @@ function Main:AddPlayerTab(Window)
     end)
     Library.Toggles.Noclip:OnChanged(function(v) Thread("Noclip", FuncNoclip, v) end)
 
-    Connections.StatLoop = RunS.Stepped:Connect(function()
+    arigato.Connections.Player_General = RunS.Stepped:Connect(function()
         local Hum = LocalPlayer.Character and LocalPlayer.Character:FindFirstChildOfClass("Humanoid")
         if Hum then
             if Library.Toggles.WS.Value then Hum.WalkSpeed = Library.Options.WSValue.Value end
