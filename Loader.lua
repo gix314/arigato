@@ -1,12 +1,14 @@
 repeat task.wait() until game:IsLoaded()
 repeat task.wait() until game.GameId ~= 0
 
-local Branch = ...
-local Source = "https://raw.githubusercontent.com/gix314/arigato/" .. Branch .. "/"
+local PassedSource, PassedBranch = ...
+
+local Branch = PassedBranch or "main"
+local Source = PassedSource or "https://raw.githubusercontent.com/gix314/arigato/" .. Branch .. "/"
 
 local function LoadScript(Path)
     local Success, Result = pcall(function()
-        return loadstring(game:HttpGet(Source .. Path .. ".lua"))()
+        return loadstring(game:HttpGet(Source .. Path .. ".lua"), Path)(Source, Branch)
     end)
     
     if not Success then
