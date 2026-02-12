@@ -161,10 +161,6 @@ function Main:AddPlayerTab(Window)
     GB.Right.Game:AddToggle("NoFog", { Text = "No Fog" })
 
     AddSliderToggle({ Group = GB.Right.Game, Id = "OverrideTime", Text = "Time Of Day", Default = 12, Min = 0, Max = 24, Rounding = 1 })
-    
-    Library.Toggles.OverrideTime.Value:OnChanged(function()
-        Library.Options.TimeValue:SetVisible(TimeToggle.Value)
-    end)
 
     -- // AntiMod
     GB.Right.AntiMod:AddToggle("AntiMod", { Text = "Anti Mod" })
