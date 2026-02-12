@@ -219,8 +219,6 @@ function Main:AddPlayerTab(Window)
         FPS_S:SetVisible(FPS_T.Value)
         if not v then
             setfpscap(999)
-        else
---            setfpscap(FPS_S.Value)
         end
     end)
 
