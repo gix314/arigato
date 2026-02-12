@@ -33,10 +33,9 @@ table.sort(Fonts)]]
 
 local function GetFont(fontEnum)
     local mapping = {
-        [Enum.Font.SourceSans] = 0, -- UI
-        [Enum.Font.Roboto] = 1,     -- System
-        [Enum.Font.Monospace] = 2,  -- Plex
-        [Enum.Font.Fantasy] = 3     -- Cascadia
+        [Enum.Font.SourceSans] = 0,
+        [Enum.Font.Roboto] = 1,
+        [Enum.Font.Fantasy] = 2
     }
     return mapping[fontEnum] or 0
 end
