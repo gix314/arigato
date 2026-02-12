@@ -509,6 +509,6 @@ end)
 Main:AddPlayerTab(Window)
 Main:AddConfigTab(Window)
 
-if Library.Unloaded then
-    ClearAllESP()
-end
+Library:OnUnload(function()
+	ClearAllESP()
+end)
