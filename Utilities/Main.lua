@@ -138,7 +138,7 @@ function Main:AddPlayerTab(Window)
     AddSliderToggle({ Group = GB.Left.General, Id = "Grav", Text = "Gravity", Default = 196, Min = 0, Max = 500, Rounding = 1})
     AddSliderToggle({ Group = GB.Left.General, Id = "Zoom", Text = "Camera Zoom", Default = 128, Min = 128, Max = 10000 })
     AddSliderToggle({ Group = GB.Left.General, Id = "FOV", Text = "Field of View", Default = 70, Min = 30, Max = 120 })
-    local FPS_T, FPS_S = AddSliderToggle({ Group = GB.Left.General, Id = "LimitFPS", Text = "Set Max FPS", DefaultToggle = true, Default = 60, Min = 30, Max = 240 })
+    local FPS_T, FPS_S = AddSliderToggle({ Group = GB.Left.General, Id = "LimitFPS", Text = "Set Max FPS", Default = 60, Min = 30, Max = 240 })
 
     -- // Server
     GB.Left.Server:AddToggle("AntiAFK", { Text = "Anti AFK", Default = true })
