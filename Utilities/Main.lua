@@ -5,15 +5,14 @@ local Lighting = game:GetService("Lighting")
 local Players = game:GetService("Players")
 local LocalPlayer = Players.LocalPlayer
 
+local StarterPlr = game:GetService("StarterPlayer")
+
 -- // Tables
 local Flags = {}
 local Connections = {}
 local Defaults = {
     Gravity = workspace.Gravity,
     FOV = 70,
-    WalkSpeed = 16,
-    JumpPower = 50,
-    HipHeight = 0,
     ClockTime = Lighting.ClockTime
 }
 
@@ -279,9 +278,9 @@ function Main:AddConfigTab(Window)
         Cleanup(Connections)
         local Hum = LocalPlayer.Character and LocalPlayer.Character:FindFirstChildOfClass("Humanoid")
         if Hum then
-            Hum.WalkSpeed = Defaults.WalkSpeed
-            Hum.JumpPower = Defaults.JumpPower
-            Hum.HipHeight = Defaults.HipHeight
+            Hum.WalkSpeed = StarterPlr.CharacterWalkSpeed
+            Hum.JumpPower = StarterPlr.CharacterJumpPower
+            Hum.HipHeight = 2
         end
         workspace.Gravity = Defaults.Gravity
         workspace.CurrentCamera.FieldOfView = Defaults.FOV
