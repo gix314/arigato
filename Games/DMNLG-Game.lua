@@ -1,7 +1,9 @@
+-- // Library
 local arigato = getgenv().arigato
 local UI = arigato.Utilities.UI
 local Main = arigato.Utilities.Main
 
+-- // UI Setup
 local Window = Library:CreateWindow({
 	Title = "arigato",
 	Footer = "Demonology | BUILD 0.0.0.1 | DEV",
@@ -71,13 +73,7 @@ GB.Main.Left.Auto:AddToggle("Lights", {
 GB.Main.Left.Modifiers:AddToggle("UnlockPerk", {
     Text = "Unlock Perks",
     Default = false,
-    Tooltip = "Working:\n- The Strength\nNot Working:\n- The Emperor\nUnknown: Other perks left",
-})
-
-GB.Main.Left.Modifiers:AddToggle("Fullbright", {
-    Text = "Fullbright",
-    Default = false,
-    Tooltip = "Fuck the game's lighting",
+    Tooltip = "Working:\nThe Strength (more stamina)\nNot Working:\nThe Emperor (additional item slot)\nUnknown: Other perks left",
 })
 
 -- // Main - Right - ESP
@@ -131,55 +127,6 @@ local CP_BoxESP = T_BoxESP:AddColorPicker("Color_BoxESP", {
     Title = "Select a color",
 })
 
--- // Player - Left
-Tabs.Player:UpdateWarningBox({
-    Title = "Warning",
-    Text = "⚠️ Use in caution.",
-    IsNormal = false,
-    Visible = true,
-    LockSize = true,
-})
 
-GB.Player.Left.Modifiers:AddToggle("WS", {
-    Text = "Walkspeed",
-    Default = false,
-    Risky = false,
-})
-
-GB.Player.Left.Modifiers:AddSlider("WSValue", {
-    Text = "Value",
-    Default = 16,
-    Min = 0,
-    Max = 200,
-    Rounding = 0,
-})
-
-GB.Player.Left.Modifiers:AddToggle("JP", {
-    Text = "JumpPower",
-    Default = false,
-    Risky = false,
-})
-
-GB.Player.Left.Modifiers:AddSlider("JPValue", {
-    Text = "Value",
-    Default = 50,
-    Min = 0,
-    Max = 500,
-    Rounding = 0,
-})
-
-GB.Player.Left.Modifiers:AddToggle("TPW", {
-    Text = "TPWalk",
-    Default = false,
-    Risky = false,
-})
-
-GB.Player.Left.Modifiers:AddSlider("TPWValue", {
-    Text = "Value",
-    Default = 1,
-    Min = 0,
-    Max = 10,
-    Rounding = 0,
-})
-
+Main:AddPlayerTab(Window)
 Main:AddConfigTab(Window)
