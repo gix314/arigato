@@ -32,14 +32,14 @@ local GameData = Games[game.PlaceId]
 if GameData then
     arigato.Utilities.UI.Library:Notify({
         Title = "arigato",
-        Description = "Loading " .. GameData.Name .. "...",
+        Description = "Detected supported game: " .. GameData.Name .. "\nAttempt to load script..",
         Time = 5
     })
     LoadScript(GameData.Script)
 else
     arigato.Utilities.UI.Library:Notify({
         Title = "arigato",
-        Description = "Game not supported, loading Universal...",
+        Description = "Detected unsupported game.\nLoading Universal script..",
         Time = 5
     })
     LoadScript("Games/Universal")
