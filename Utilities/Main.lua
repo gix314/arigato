@@ -1,5 +1,5 @@
 -- // Services
-local RunService = game:GetService("RunService")
+local RunS = game:GetService("RunService")
 local TeleportService = game:GetService("TeleportService")
 local Lighting = game:GetService("Lighting")
 local Players = game:GetService("Players")
@@ -113,7 +113,7 @@ function Main:AddPlayerTab(Window)
     PlayerTab:UpdateWarningBox({
         Title = "Warning",
         Text = "⚠️ Use in caution.",
-        IsNormal = true,
+        IsNormal = false,
         Visible = true,
         LockSize = true,
     })
