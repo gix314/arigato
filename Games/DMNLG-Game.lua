@@ -34,7 +34,8 @@ table.sort(Fonts)
 -- // ESP Functions
 local ESP_Cache = {
     Boxes = {},
-    Names = {} 
+    Names = {},
+    Tracers = {},
 }
 
 local CurrentTargets = {}
@@ -72,6 +73,17 @@ local function GetDrawText(obj)
     txt.Visible = false
     ESP_Cache.Names[obj] = txt
     return txt
+end
+
+local function ClearESP()
+    for category, drawings in pairs(ESP_Cache) do
+        for obj, drawing in pairs(drawings) do
+            if drawing then
+                drawing:Remove()
+            end
+        end
+        table.clear(drawings)
+    end
 end
 
 -- // Script Functions
@@ -205,7 +217,7 @@ GB.Main.Right.ESP:AddToggle("Toggle_ESP", {
 
 GB.Main.Right.ESP:AddDropdown("Selected_ESP", {
     Text = "Select ESP Target (s)",
-    Values = {"Ghost", "Items", "Players", "Ghost Orb", "Handprints"},
+    Values = {"Ghost", "Items", "Players", "Orb", "Handprints"},
     Default = 1,
     Multi = true,
     Searchable = true,
@@ -386,17 +398,23 @@ task.spawn(function()
             end
         end
         
-        -- Ghost detection
         if Selected["Ghost"] and workspace:FindFirstChild("Ghost") then
              table.insert(newTargets, {Instance = workspace.Ghost, Name = "Ghost", Type = "Ghost"})
         end
 
-        if Selected["Ghost Orb"] and workspace:FindFirstChild("GhostOrb") then 
-            table.insert(Targets, {Instance = workspace.GhostOrb, Name = "Orb"}) 
+        local HPFolder = workspace:FindFirstChild("Handprints")
+        if Selected["Handprints"] and HPFolder then
+            for _, printObj in ipairs(HPFolder:GetChildren()) do
+                table.insert(newTargets, {Instance = printObj, Name = "Print", Type = "Handprint"})
+            end
         end
 
-        if Selected["Handprints"] and workspace:FindFirstChild("Handprints") and #workspace:FindFirstChild("Handprints"):GetChildren() > 0 then
-             table.insert(newTargets, {Instance = workspace:FindFirstChild("Handprints"):GetChildren(), Name = "Print", Type = "Handprint"})
+        if Selected["Ghost Orb"] then
+            for _, obj in ipairs(workspace:GetChildren()) do
+                if obj.Name == "GhostOrb" or obj.Name == "Ghost Orb" then
+                    table.insert(newTargets, {Instance = obj, Name = "Orb", Type = "GhostOrb"})
+                end
+            end
         end
 
         CurrentTargets = newTargets
@@ -405,8 +423,11 @@ end)
 
 arigato.Connections.ESP = RunS.RenderStepped:Connect(function()
     if not Toggles.Toggle_ESP.Value then
-        for _, v in pairs(ESP_Cache.Boxes) do v.Visible = false end
-        for _, v in pairs(ESP_Cache.Names) do v.Visible = false end
+        for _, category in pairs(ESP_Cache) do
+            for _, drawing in pairs(category) do
+                drawing.Visible = false
+            end
+        end
         return
     end
 
@@ -444,10 +465,12 @@ arigato.Connections.ESP = RunS.RenderStepped:Connect(function()
             boxDrawing.Visible = false
         end
     end
-    for obj, drawing in pairs(ESP_Cache.Boxes) do
-        if not obj or not obj.Parent then
-            drawing:Remove()
-            ESP_Cache.Boxes[obj] = nil
+    for category, drawings in pairs(ESP_Cache) do
+        for obj, drawing in pairs(drawings) do
+            if not obj or not obj.Parent then
+                drawing:Remove()
+                drawings[obj] = nil
+            end
         end
     end
 end)
@@ -476,16 +499,5 @@ Main:AddPlayerTab(Window)
 Main:AddConfigTab(Window)
 
 if Library.Unloaded then
-        for obj, drawing in pairs(ESP_Cache.Boxes) do
-        if not obj or not obj.Parent then
-            drawing:Remove()
-            ESP_Cache.Boxes[obj] = nil
-        end
-    end
-            for obj, drawing in pairs(ESP_Cache.Names) do
-        if not obj or not obj.Parent then
-            drawing:Remove()
-            ESP_Cache.Names[obj] = nil
-        end
-    end
+    ClearAllESP()
 end
