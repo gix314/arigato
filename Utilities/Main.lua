@@ -39,7 +39,7 @@ end
 
 arigato.Thread = function(featurePath, featureFunc, isEnabled, ...)
     local pathParts = featurePath:split(".")
-    local currentTable = Flags 
+    local currentTable = arigato.Flags
 
     for i = 1, #pathParts - 1 do
         local part = pathParts[i]
@@ -51,7 +51,7 @@ arigato.Thread = function(featurePath, featureFunc, isEnabled, ...)
     local activeThread = currentTable[flagKey]
 
     if isEnabled then
-        if activeThread then task.cancel(activeThread) end
+        if activeThread then task.cancel(activeThread) end 
         currentTable[flagKey] = task.spawn(featureFunc, ...)
     else
         if activeThread then
