@@ -239,7 +239,7 @@ local T_NameESP = GB.Main.Right.ESP:AddToggle("Name", {
 
 GB.Main.Right.ESP:AddDropdown("NameESP_Font", {
     Text = "Select Font",
-    Values = {"SourceSans", "Roboto", "Monospace", "Fantasy"},
+    Values = {"SourceSans", "Roboto", "Fantasy"},
     Default = "SourceSans",
     Multi = false,
 })
