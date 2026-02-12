@@ -171,9 +171,9 @@ function Main:AddPlayerTab(Window)
     -- // Func
     Library.Toggles.TPW:OnChanged(function(v)
         TPW_S:SetVisible(TPW_T.Value)
-        Thread("TPW", FuncTPW, v)
+        arigato.Thread("TPW", FuncTPW, v)
     end)
-    Library.Toggles.Noclip:OnChanged(function(v) Thread("Noclip", FuncNoclip, v) end)
+    Library.Toggles.Noclip:OnChanged(function(v) arigato.Thread("Noclip", FuncNoclip, v) end)
 
     arigato.Connections.Player_General = RunS.Stepped:Connect(function()
         local Hum = LocalPlayer.Character and LocalPlayer.Character:FindFirstChildOfClass("Humanoid")
