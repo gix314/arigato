@@ -87,7 +87,7 @@ local function FuncNoclip()
 end
 
 -- // UI Functions
-function Main:AddSliderToggle(Config)
+function AddSliderToggle(Config)
     local Toggle = Config.Group:AddToggle(Config.Id, { 
         Text = Config.Text, 
         Default = Config.DefaultToggle or false 
