@@ -474,3 +474,18 @@ end)
 
 Main:AddPlayerTab(Window)
 Main:AddConfigTab(Window)
+
+if Library.Unloaded then
+        for obj, drawing in pairs(ESP_Cache.Boxes) do
+        if not obj or not obj.Parent then
+            drawing:Remove()
+            ESP_Cache.Boxes[obj] = nil
+        end
+    end
+            for obj, drawing in pairs(ESP_Cache.Names) do
+        if not obj or not obj.Parent then
+            drawing:Remove()
+            ESP_Cache.Names[obj] = nil
+        end
+    end
+end
