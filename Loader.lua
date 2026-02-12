@@ -1,7 +1,7 @@
 repeat task.wait() until game:IsLoaded()
 repeat task.wait() until game.GameId ~= 0
 
-local Branch = "main"
+local Branch = ...
 local Source = "https://raw.githubusercontent.com/gix314/arigato/" .. Branch .. "/"
 
 local function LoadScript(Path)
