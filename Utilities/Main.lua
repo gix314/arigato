@@ -2,6 +2,7 @@ local Main = {}
 local UI = getgenv().arigato.Utilities.UI
 
 function Main:AddConfigTab(Window)
+    local GameName = getgenv().arigato.GameName or "Universal"
     local ConfigTab = Window:AddTab("Config", "cog")
     local MenuGroup = ConfigTab:AddLeftGroupbox("Menu")
     
@@ -44,7 +45,7 @@ function Main:AddConfigTab(Window)
     })
     MenuGroup:AddDivider()
     MenuGroup:AddLabel("Menu bind")
-        :AddKeyPicker("MenuKeybind", { Default = "RightShift", NoUI = true, Text = "Menu keybind" })
+        :AddKeyPicker("MenuKeybind", { Default = "Insert", NoUI = true, Text = "Menu keybind" })
 
     MenuGroup:AddButton("Unload", function()
         UI.Library:Unload()
@@ -52,9 +53,13 @@ function Main:AddConfigTab(Window)
     
     UI.Library.ToggleKeybind = UI.Library.Options.MenuKeybind
 
+    UI.SaveManager:SetIgnoreIndexes({ "MenuKeybind" })
     UI.SaveManager:IgnoreThemeSettings()
     UI.SaveManager:BuildConfigSection(ConfigTab)
     UI.ThemeManager:ApplyToTab(ConfigTab)
+
+    UI.ThemeManager:SetFolder("arigato")
+    UI.SaveManager:SetFolder("arigato/" .. GameName)
     
     UI.SaveManager:LoadAutoloadConfig()
 end

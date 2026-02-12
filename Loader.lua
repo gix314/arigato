@@ -30,16 +30,20 @@ local Games = {
 local GameData = Games[game.PlaceId]
 
 if GameData then
+    getgenv().arigato.GameName = GameData.Name 
+    
     arigato.Utilities.UI.Library:Notify({
         Title = "arigato",
-        Description = "Detected supported game: " .. GameData.Name .. "\nAttempt to load script..",
+        Description = "Supported game detected: " .. GameData.Name .. "\nAttempt to load script..",
         Time = 5
     })
     LoadScript(GameData.Script)
 else
+    getgenv().arigato.GameName = "Universal"
+    
     arigato.Utilities.UI.Library:Notify({
         Title = "arigato",
-        Description = "Detected unsupported game.\nLoading Universal script..",
+        Description = "Unsupported game detected, loading Universal script..",
         Time = 5
     })
     LoadScript("Games/Universal")
