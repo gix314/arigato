@@ -23,13 +23,23 @@ local EvidenceFound = {
     Withered = false
 }
 
-local Fonts = {}
+--[[local Fonts = {}
 
 for _, font in ipairs(Enum.Font:GetEnumItems()) do
     table.insert(Fonts, font.Name)
 end
 
-table.sort(Fonts)
+table.sort(Fonts)]]
+
+local function GetFont(fontEnum)
+    local mapping = {
+        [Enum.Font.SourceSans] = 0, -- UI
+        [Enum.Font.Roboto] = 1,     -- System
+        [Enum.Font.Monospace] = 2,  -- Plex
+        [Enum.Font.Fantasy] = 3     -- Cascadia
+    }
+    return mapping[fontEnum] or 0
+end
 
 -- // ESP Functions
 local ESP_Cache = {
@@ -229,11 +239,10 @@ local T_NameESP = GB.Main.Right.ESP:AddToggle("Name", {
 })
 
 GB.Main.Right.ESP:AddDropdown("NameESP_Font", {
-    Text = "Select Text Font",
-    Values = Fonts,
-    Default = 16,
+    Text = "Select Font",
+    Values = {"SourceSans", "Roboto", "Monospace", "Fantasy"},
+    Default = "SourceSans",
     Multi = false,
-    Searchable = true,
 })
 
 GB.Main.Right.ESP:AddInput("NameESP_Size", {
@@ -448,6 +457,8 @@ arigato.Connections.ESP = RunS.RenderStepped:Connect(function()
             nameDrawing.Text = data.Name
             nameDrawing.Color = Options.Color_NameESP.Value
             nameDrawing.Visible = true
+            nameDrawing.Size = tonumber(Options.NameESP_Size.Value) or 13
+            nameDrawing.Font = GetFont(Enum.Font[Options.NameESP_Font.Value] or Enum.Font.SourceSans)
         else
             nameDrawing.Visible = false
         end
