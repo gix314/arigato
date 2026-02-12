@@ -3,6 +3,8 @@ local arigato = getgenv().arigato
 local UI = arigato.Utilities.UI
 local Main = arigato.Utilities.Main
 
+local Plrs = game:GetService('Players')
+local Plr = Plrs.LocalPlayer
 local RunS = game:GetService("RunService")
 
 local Options = Library.Options
