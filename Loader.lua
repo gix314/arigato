@@ -17,7 +17,10 @@ local function LoadScript(Path)
 end
 
 getgenv().arigato = {
-    Utilities = {}
+    Utilities = {},
+    Flags = {},
+    Connections = {},
+    GameName = "Universal"
 }
 
 arigato.Utilities.UI = LoadScript("Utilities/UI")

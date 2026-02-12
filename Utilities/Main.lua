@@ -8,8 +8,6 @@ local LocalPlayer = Players.LocalPlayer
 local StarterPlr = game:GetService("StarterPlayer")
 
 -- // Tables
-local Flags = {}
-local Connections = {}
 local Defaults = {
     Gravity = workspace.Gravity,
     FOV = 70,
@@ -20,21 +18,26 @@ local Main = {}
 local UI = getgenv().arigato.Utilities.UI
 
 -- // Management Functions
-local function Cleanup(tbl)
-    for key, value in pairs(tbl) do
-        if typeof(value) == "RBXScriptConnection" then
-            value:Disconnect()
-            tbl[key] = nil
-        elseif typeof(value) == 'thread' then
-            task.cancel(value)
-            tbl[key] = nil
-        elseif type(value) == 'table' then
-            Cleanup(value)
+arigato.Cleanup = function()
+    local function DeepClean(tbl)
+        for key, value in pairs(tbl) do
+            if typeof(value) == "RBXScriptConnection" then
+                value:Disconnect()
+                tbl[key] = nil
+            elseif typeof(value) == 'thread' then
+                task.cancel(value)
+                tbl[key] = nil
+            elseif type(value) == 'table' then
+                DeepClean(value)
+            end
         end
     end
+
+    DeepClean(arigato.Flags)
+    DeepClean(arigato.Connections)
 end
 
-local function Thread(featurePath, featureFunc, isEnabled, ...)
+arigato.Thread = function(featurePath, featureFunc, isEnabled, ...)
     local pathParts = featurePath:split(".")
     local currentTable = Flags 
 
@@ -126,17 +129,16 @@ function Main:AddPlayerTab(Window)
     }
 
     -- // General
-    local WS_T, WS_S = AddSliderToggle({ Group = GB.Left.General, Id = "WS", Text = "WalkSpeed", Default = 16, Min = 16, Max = 250 })
-    local TPW_T, TPW_S = AddSliderToggle({ Group = GB.Left.General, Id = "TPW", Text = "TPWalk", Default = 2, Min = 1, Max = 50 })
+    AddSliderToggle({ Group = GB.Left.General, Id = "WS", Text = "WalkSpeed", Default = 16, Min = 16, Max = 250 })
+    local TPW_T, TPW_S = AddSliderToggle({ Group = GB.Left.General, Id = "TPW", Text = "TPWalk", Default = 1, Min = 1, Max = 10, Rounding = 1 })
     AddSliderToggle({ Group = GB.Left.General, Id = "JP", Text = "JumpPower", Default = 50, Min = 0, Max = 500 })
     AddSliderToggle({ Group = GB.Left.General, Id = "HH", Text = "HipHeight", Default = 2, Min = 0, Max = 10, Rounding = 1 })
+    GB.Left.General:AddToggle("Noclip", { Text = "Noclip" })
+    GB.Left.General:AddToggle("Disable3DRender", { Text = "Disable 3D Rendering" })
     AddSliderToggle({ Group = GB.Left.General, Id = "Grav", Text = "Gravity", Default = 196, Min = 0, Max = 500, Rounding = 1})
     AddSliderToggle({ Group = GB.Left.General, Id = "Zoom", Text = "Camera Zoom", Default = 128, Min = 128, Max = 10000 })
     AddSliderToggle({ Group = GB.Left.General, Id = "FOV", Text = "Field of View", Default = 70, Min = 30, Max = 120 })
-    local FPS_T, FPS_S = AddSliderToggle({ Group = GB.Left.General, Id = "LimitFPS", Text = "Set Max FPS", Default = 60, Min = 30, Max = 240 })
-
-    GB.Left.General:AddToggle("Noclip", { Text = "Noclip" })
-    GB.Left.General:AddToggle("Disable3DRender", { Text = "Disable 3D Rendering" })
+    local FPS_T, FPS_S = AddSliderToggle({ Group = GB.Left.General, Id = "LimitFPS", Text = "Set Max FPS", DefaultToggle = true, Default = 60, Min = 30, Max = 240 })
 
     -- // Server
     GB.Left.Server:AddToggle("AntiAFK", { Text = "Anti AFK", Default = true })
@@ -164,14 +166,6 @@ function Main:AddPlayerTab(Window)
         Text = "Action on Mod Join", 
         Values = {"Kick", "Panic"}, 
         Default = 1 
-    })
-
-    PlayerTab:UpdateWarningBox({
-        Title = "Warning",
-        Text = "⚠️ Use in caution.",
-        IsNormal = false,
-        Visible = true,
-        LockSize = true,
     })
 
     -- // Func
@@ -242,6 +236,35 @@ function Main:AddConfigTab(Window)
 
     local ConfigTab = Window:AddTab("Config", "cog")
     local MenuGroup = ConfigTab:AddLeftGroupbox("Menu", "wrench")
+
+    local Watermark = Library:AddDraggableLabel("N/A")
+
+    local FrameTimer = tick()
+    local FrameCounter = 0;
+    local FPS = 60;
+    
+    local WatermarkConnection = game:GetService('RunService').RenderStepped:Connect(function()
+        FrameCounter += 1;
+    
+        if (tick() - FrameTimer) >= 1 then
+            FPS = FrameCounter;
+            FrameTimer = tick();
+            FrameCounter = 0;
+        end;
+    
+        Watermark:SetText(('arigato | '..GameName..' | %s fps | %s ms'):format(
+            math.floor(FPS),
+            math.floor(game:GetService('Stats').Network.ServerStatsItem['Data Ping']:GetValue())
+        ));
+    end);
+
+    MenuGroup:AddToggle("WatermarkVisible", {
+	    Default = false,
+	    Text = "Show Watermark",
+	    Callback = function(value)
+		    Watermark:SetVisible(value)
+	    end,
+    })
     
     MenuGroup:AddToggle("KeybindMenuOpen", {
         Default = UI.Library.KeybindFrame.Visible,
@@ -274,8 +297,7 @@ function Main:AddConfigTab(Window)
     UI.Library.ToggleKeybind = UI.Library.Options.MenuKeybind
 
     MenuGroup:AddButton("Unload", function()
-        Cleanup(Flags)
-        Cleanup(Connections)
+        arigato.Cleanup()
         local Hum = LocalPlayer.Character and LocalPlayer.Character:FindFirstChildOfClass("Humanoid")
         if Hum then
             Hum.WalkSpeed = StarterPlr.CharacterWalkSpeed

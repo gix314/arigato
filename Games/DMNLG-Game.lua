@@ -3,6 +3,30 @@ local arigato = getgenv().arigato
 local UI = arigato.Utilities.UI
 local Main = arigato.Utilities.Main
 
+local Options = Library.Options
+local Toggles = Library.Toggles
+
+Library.ForceCheckbox = true
+Library.ShowToggleFrameInKeybinds = true
+
+-- // Variables
+local EvidenceFound = {
+    MaxEMF = 0,
+    EMF5 = false,
+    LaserProjector = false,
+    GhostWriting = false,
+    Fingerprint = false,
+    Withered = false
+}
+
+local Fonts = {}
+
+for _, font in ipairs(Enum.Font:GetEnumItems()) do
+    table.insert(Fonts, font.Name)
+end
+
+table.sort(Fonts)
+
 -- // UI Setup
 local Window = Library:CreateWindow({
 	Title = "arigato",
@@ -12,7 +36,7 @@ local Window = Library:CreateWindow({
 	AutoShow = true,
 	Center = true,
 	EnableSidebarResize = true,
-    Font = Enum.Font.Jura,
+    Font = Enum.Font.Roboto,
 })
 
 local Tabs = {
