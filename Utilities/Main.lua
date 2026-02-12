@@ -153,15 +153,15 @@ function Main:AddPlayerTab(Window)
     GB.Left.Server:AddButton({ Text = "Rejoin", Func = function() TeleportService:Teleport(game.PlaceId, LocalPlayer) end })
     GB.Left.Server:AddButton({ Text = "Copy Discord", Func = function() setclipboard("https://discord.gg/") end })
 
-    local AutoHop = GB.Left.Server:AddToggle("AutoServerhop", { Text = "Auto Serverhop" })
-    AutoHop:AddSlider("AutoHopMins", { Text = "Minutes", Default = 30, Min = 0, Max = 300, Compact = true })
+    GB.Left.Server:AddToggle("AutoServerhop", { Text = "Auto Serverhop" })
+    GB.Left.Server:AddSlider("AutoHopMins", { Text = "Minutes", Default = 30, Min = 0, Max = 300, Compact = true })
 
     -- // Game
     GB.Right.Game:AddToggle("Fullbright", { Text = "Fullbright" })
     GB.Right.Game:AddToggle("NoFog", { Text = "No Fog" })
 
-    local TimeToggle = GB.Right.Game:AddToggle("OverrideTime", { Text = "Time Of Day" })
-    TimeToggle:AddSlider("TimeValue", { Text = "Value", Default = 12, Min = 0, Max = 24, Rounding = 1, Compact = true, Visible = false })
+    GB.Right.Game:AddToggle("OverrideTime", { Text = "Time Of Day" })
+    GB.Right.Game:AddSlider("TimeValue", { Text = "Value", Default = 12, Min = 0, Max = 24, Rounding = 1, Compact = true, Visible = false })
     
     TimeToggle:OnChanged(function()
         Library.Options.TimeValue:SetVisible(TimeToggle.Value)
@@ -179,7 +179,6 @@ function Main:AddPlayerTab(Window)
     Library.Toggles.TPW:OnChanged(function(v) Thread("TPW", FuncTPW, v) end)
     Library.Toggles.Noclip:OnChanged(function(v) Thread("Noclip", FuncNoclip, v) end)
 
-    -- Static Connections (Properties that don't need a while loop)
     Connections.StatLoop = RunS.Stepped:Connect(function()
         local Hum = LocalPlayer.Character and LocalPlayer.Character:FindFirstChildOfClass("Humanoid")
         if Hum then
@@ -189,18 +188,29 @@ function Main:AddPlayerTab(Window)
         end
         workspace.Gravity = Library.Toggles.Grav.Value and Library.Options.GravValue.Value or Defaults.Gravity
         if Library.Toggles.FOV.Value then workspace.CurrentCamera.FieldOfView = Library.Options.FOVValue.Value end
+        if Library.Toggles.Zoom.Value then LocalPlayer.CameraMaxZoomDistance = Library.Options.ZoomValue.Value end
     end)
 
     -- Lighting Connection
-    Connections.Lighting = Lighting.Changed:Connect(function()
-        if Library.Toggles.Fullbright.Value then
-            Lighting.Brightness = 2
-            Lighting.ClockTime = 14
-            Lighting.GlobalShadows = false
-        elseif Library.Toggles.OverrideTime.Value then
-            Lighting.ClockTime = Library.Options.OverrideTimeValue.Value
+    task.spawn(function()
+        while task.wait() do
+            if Library.Toggles.Fullbright.Value then
+                Lighting.Brightness = 2
+                Lighting.ClockTime = 14
+                Lighting.GlobalShadows = false
+            elseif Library.Toggles.OverrideTime.Value then
+                Lighting.ClockTime = Library.Options.OverrideTimeValue.Value
+            end
+            if Library.Toggles.NoFog.Value then Lighting.FogEnd = 9e9 end
+            if Library.Unloaded then break end
         end
-        if Library.Toggles.NoFog.Value then Lighting.FogEnd = 9e9 end
+    end)
+
+    LocalPlayer.Idled:Connect(function()
+        if Library.Toggles.AntiAFK.Value then
+            game:GetService("VirtualUser"):CaptureController()
+            game:GetService("VirtualUser"):ClickButton2(Vector2.new())
+        end
     end)
 
     -- FPS Cap
@@ -257,7 +267,6 @@ function Main:AddConfigTab(Window)
     MenuGroup:AddButton("Unload", function()
         Cleanup(Flags)
         Cleanup(Connections)
-        
         local Hum = LocalPlayer.Character and LocalPlayer.Character:FindFirstChildOfClass("Humanoid")
         if Hum then
             Hum.WalkSpeed = Defaults.WalkSpeed
