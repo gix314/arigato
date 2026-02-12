@@ -160,10 +160,9 @@ function Main:AddPlayerTab(Window)
     GB.Right.Game:AddToggle("Fullbright", { Text = "Fullbright" })
     GB.Right.Game:AddToggle("NoFog", { Text = "No Fog" })
 
-    GB.Right.Game:AddToggle("OverrideTime", { Text = "Time Of Day" })
-    GB.Right.Game:AddSlider("TimeValue", { Text = "Value", Default = 12, Min = 0, Max = 24, Rounding = 1, Compact = true, Visible = false })
+    AddSliderToggle({ Group = GB.Right.Game, Id = "OverrideTime", Text = "Time Of Day", Default = 12, Min = 0, Max = 24, Rounding = 1 })
     
-    TimeToggle:OnChanged(function()
+    Library.Toggles.OverrideTime.Value:OnChanged(function()
         Library.Options.TimeValue:SetVisible(TimeToggle.Value)
     end)
 
