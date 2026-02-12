@@ -407,8 +407,8 @@ task.spawn(function()
             end
         end
         
-        if Selected["Ghost"] and workspace:FindFirstChild("Ghost") then
-             table.insert(newTargets, {Instance = workspace.Ghost, Name = "Ghost", Type = "Ghost"})
+        if Selected["Ghost"] and workspace:FindFirstChild("Ghost") and workspace:FindFirstChild("Ghost"):FindFirstChild("HumanoidRootPart") then
+             table.insert(newTargets, {Instance = workspace.Ghost.HumanoidRootPart, Name = "Ghost", Type = "Ghost"})
         end
 
         local HPFolder = workspace:FindFirstChild("Handprints")
