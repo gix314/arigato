@@ -113,7 +113,7 @@ function Main:AddPlayerTab(Window)
     PlayerTab:UpdateWarningBox({
         Title = "Warning",
         Text = "⚠️ Use in caution.",
-        IsNormal = false,
+        IsNormal = true,
         Visible = true,
         LockSize = true,
     })
