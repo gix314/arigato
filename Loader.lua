@@ -30,6 +30,7 @@ arigato.Utilities.Main = LoadScript("Utilities/Main")
 
 local Games = {
     [18794863104] = {Name = "Demonology", Script = "Games/DMNLG-Game"},
+    [122809141833750] =     {Name = "EUT",        Script = "Games/EUT"},
 }
 
 local GameData = Games[game.PlaceId]
