@@ -120,27 +120,27 @@ do
             { FontColor = "eeffff", MainColor = "212121", AccentColor = "82aaff", BackgroundColor = "151515", OutlineColor = "424242" },
         },
         ["Crimson"] = {
-            20,
+            19,
             { FontColor = "ffffff", MainColor = "2d1414", AccentColor = "dc143c", BackgroundColor = "1a0a0a", OutlineColor = "4a2525" },
         },
         ["Royal"] = {
-            21,
+            20,
             { FontColor = "fdfbf7", MainColor = "1a1226", AccentColor = "ffd700", BackgroundColor = "0f0a14", OutlineColor = "3b2a59" },
         },
         ["Emerald"] = {
-            22,
+            21,
             { FontColor = "e6eee8", MainColor = "141a14", AccentColor = "2ecc71", BackgroundColor = "0a0d0a", OutlineColor = "254a2a" },
         },
         ["Obsidian"] = {
-            23,
+            22,
             { FontColor = "e0e0e0", MainColor = "1a1a1a", AccentColor = "ffffff", BackgroundColor = "0d0d0d", OutlineColor = "333333" },
         },
         ["Oceanic"] = {
-            24,
+            23,
             { FontColor = "dcf2f9", MainColor = "0e1c26", AccentColor = "00bfff", BackgroundColor = "070f14", OutlineColor = "1b364a" },
         },
         ["Neon"] = {
-            25,
+            24,
             { FontColor = "ffffff", MainColor = "1a001a", AccentColor = "ff00ff", BackgroundColor = "0d000d", OutlineColor = "4d004d" },
         },
     }
