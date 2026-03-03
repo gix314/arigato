@@ -143,6 +143,22 @@ do
             24,
             { FontColor = "ffffff", MainColor = "1a001a", AccentColor = "ff00ff", BackgroundColor = "0d000d", OutlineColor = "4d004d" },
         },
+        ["Banana"] = {
+            25, 
+            { FontColor = "2d2d2d", MainColor = "fff4cc", AccentColor = "ffcc00", BackgroundColor = "fffdf5", OutlineColor = "ffeb99" },
+        },
+        ["Vaporwave"] = {
+            26,
+            { FontColor = "ffffff", MainColor = "1a0033", AccentColor = "00ffff", BackgroundColor = "0d001a", OutlineColor = "008080" },
+        },
+        ["Volcanic"] = {
+            27,
+            { FontColor = "ffffff", MainColor = "1a0d00", AccentColor = "ff4500", BackgroundColor = "0d0700", OutlineColor = "802200" },
+        },
+        ["Midnight"] = {
+            28,
+            { FontColor = "ffffff", MainColor = "0a0a2a", AccentColor = "4d4dff", BackgroundColor = "05051a", OutlineColor = "262680" },
+        },
     }
 
     function ThemeManager:SetLibrary(library)
