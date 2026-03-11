@@ -159,6 +159,14 @@ do
             28,
             { FontColor = "ffffff", MainColor = "0a0a2a", AccentColor = "4d4dff", BackgroundColor = "05051a", OutlineColor = "262680" },
         },
+        ["Fleurdelys"] = {
+            29,
+            { FontColor = "ffffff", MainColor = "0d1a2b", AccentColor = "00aaff", BackgroundColor = "050a14", OutlineColor = "004466" },
+        },
+        ["Transcendent"] = {
+            30,
+            { FontColor = "ffffff", MainColor = "1a002e", AccentColor = "bf00ff", BackgroundColor = "0d001a", OutlineColor = "4b0082" },
+        },
     }
 
     function ThemeManager:SetLibrary(library)
